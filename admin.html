@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    body { font-family: 'Outfit', sans-serif; background: #0a0e1a; color: white; text-align: center; }
+    .card { background: #161b2d; padding: 20px; border-radius: 10px; width: 80%; margin: 20px auto; border: 1px solid #30363d; }
+    input { padding: 10px; border-radius: 5px; border: none; width: 60%; }
+    button { padding: 10px 20px; background: #007bff; color: white; border: none; border-radius: 5px; cursor: pointer; }
+    .result-table { width: 100%; margin-top: 20px; border-collapse: collapse; }
+    .result-table th, .result-table td { border: 1px solid #444; padding: 10px; }
+  </style>
+</head>
+<body>
+
+  <h2>Admin Panel</h2>
+  <p>Admin: PS0048 (Sajal)</p>
+
+  <div class="card">
+    <input type="text" id="searchId" placeholder="Enter Member ID (e.g. PS1750)">
+    <button onclick="searchUser()">Search</button>
+  </div>
+
+  <div id="displayArea" class="card" style="display:none;">
+    <table class="result-table">
+      <tr><th>Name</th><td id="resName"></td></tr>
+      <tr><th>Number</th><td id="resNumber"></td></tr>
+      <tr><th>Balance</th><td id="resBalance"></td></tr>
+      <tr><th>Coin Status</th><td><button>Approve</button></td></tr>
+      <tr><th>Gmail Status</th><td><button>Valid</button> <button>Invalid</button></td></tr>
+    </table>
+  </div>
+
+  <script>
+    function searchUser() {
+      var id = document.getElementById('searchId').value;
+      google.script.run.withSuccessHandler(function(res) {
+        if(res.status === "success") {
+          document.getElementById('displayArea').style.display = "block";
+          document.getElementById('resName').innerText = res.data.name;
+          document.getElementById('resNumber').innerText = res.data.number;
+          document.getElementById('resBalance').innerText = res.data.balance;
+        } else {
+          alert(res.message);
+        }
+      }).getMemberData(id);
+    }
+  </script>
+</body>
+</html>
